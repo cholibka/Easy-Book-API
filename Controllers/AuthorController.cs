@@ -1,11 +1,13 @@
 ﻿using EasyCRUDApp.Models;
 using EasyCRUDApp.Repositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyCRUDApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("Angular App")]
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorRepository _authorRepository;
@@ -28,13 +30,13 @@ namespace EasyCRUDApp.Controllers
         }
 
         [HttpPost]
-        public void Post(string name, string surname)
+        public void Post([FromQuery] string name, [FromQuery] string surname)
         {
             _authorRepository.AddAuthor(name, surname);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, string name, string surname)
+        public void Put([FromQuery] int id, [FromQuery] string name, [FromQuery] string surname)
         {
             ;
             _authorRepository.UpdateAuthor(id, name, surname);

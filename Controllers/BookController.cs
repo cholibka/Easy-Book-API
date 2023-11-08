@@ -1,11 +1,13 @@
 ﻿using EasyCRUDApp.Models;
 using EasyCRUDApp.Repositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyCRUDApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("Angular App")]
     public class BookController : ControllerBase
     {
         private readonly IBookRepository _bookRepository;
@@ -27,13 +29,13 @@ namespace EasyCRUDApp.Controllers
         }
 
         [HttpPost]
-        public void Post(string title, string description, int year, int pages, int authorId)
+        public void Post([FromQuery] string title, [FromQuery] string description, [FromQuery] int year, [FromQuery] int pages, [FromQuery] int authorId)
         {
             _bookRepository.AddBook(title, description, year, pages, authorId);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, string title, string description, int year, int pages, int authorId)
+        public void Put([FromQuery] int id, [FromQuery] string title, [FromQuery] string description, [FromQuery] int year, [FromQuery] int pages, [FromQuery] int authorId)
         {
             _bookRepository.UpdateBook(id, title, description, year, pages, authorId);
         }

@@ -28,8 +28,19 @@ namespace EasyCRUDApp.Repositories
         public void DeleteAuthor(int id)
         {
             Author author = FindById(id);
+
+            foreach (Book book in GetAllBooksByAuthor(id))
+            {
+                _context.Books.Remove(book);
+            }
+
             _context.Authors.Remove(author);
             _context.SaveChanges();
+        }
+
+        private List<Book> GetAllBooksByAuthor(int authorId)
+        {
+            return _context.Authors.Where(x => x.Id == authorId).Select(x => x.Books.ToList()).FirstOrDefault();
         }
 
         public List<AuthorDTO> GetAll()
